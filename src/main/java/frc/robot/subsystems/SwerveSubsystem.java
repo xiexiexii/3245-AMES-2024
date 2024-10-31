@@ -64,12 +64,4 @@ public class SwerveSubsystem extends SubsystemBase {
         false);
     });
   }
-
-  @Override
-  // This method will be called once per scheduler run
-  public void periodic() {}
-
-  @Override
-  // This method will be called once per scheduler run during simulation
-  public void simulationPeriodic() {}
 }

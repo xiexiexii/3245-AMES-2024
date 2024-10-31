@@ -5,10 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController.Axis;
+import edu.wpi.first.wpilibj.XboxController.Button;
 
 public final class Constants {
 
-  // Constants for controller IDs
+  // Constants for Controller IDs
   public static final class OperatorConstants {
     public static final int k_driverController = 0;
   }
@@ -20,8 +22,47 @@ public final class Constants {
 
   // Constants for controller input!
   public static final class DriveConstants {
+
+    // YAGSL Swerve Stuff (Don't touch)
     public static final double k_driveDeadBand = 0.05;
     public static final double k_driveSpeed = -1;
     public static final double k_turnRate = -1;
+
+    // Driver Controls 
+    public final static int k_intakeButton = Button.kRightBumper.value; // Right Bump
+    public final static int k_spinUpTrigger = Axis.kRightTrigger.value; // Right Trig
+    public final static int k_shootTrigger = Axis.kLeftTrigger.value; // Left Trig
+  }
+
+  // Constants for Motor IDs
+  public static final class MotorIDConstants {
+
+    // Intake
+    public static final int k_intakeBottomMotorID = 11;
+    public static final int k_intakeTopMotorID = 12;
+
+    // Indexer
+    public static final int k_indexerBottomMotorID = 21;
+    public static final int k_indexerTopMotorID =  22;
+
+    // Shooter
+    public static final int k_shooterIndexerMotorID = 31;
+    public static final int k_shooterMotorID = 32;
+  }
+
+  // Constants for Intake
+  public static final class IntakeConstants {
+    public static final double k_intakeKrakenSpeed = 0.95;
+  }
+
+  // Constants for Indexer
+  public static final class IndexerConstants {
+    public static final double k_indexerKrakenSpeed = 0.95;
+  }
+
+  // Constants for Shooter
+  public static final class ShooterConstants {
+    public static final double k_shooterIndexerKrakenSpeed = 0.6;
+    public static final double k_shooterKrakenSpeed = 0.95;
   }
 }
