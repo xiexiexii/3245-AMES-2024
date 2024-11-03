@@ -65,4 +65,18 @@ public final class Constants {
     public static final double k_shooterIndexerKrakenSpeed = 0.6;
     public static final double k_shooterKrakenSpeed = 0.95;
   }
+
+  // Constants for Motors
+  public static final class MotorConstants {
+    public static final double k_rampRate = 0.40;
+    public static final double k_closedMaxSpeed = 0.95;
+    public static final int k_supplyCurrentLimit = 40;
+  }
+
+  // Constants for PID
+  public static final class PIDConstants {
+    public static final double k_intakekP = 0.0;
+    public static final double k_intakekI = 0.0;
+    public static final double k_intakekD = 0.0;
+  }
 }

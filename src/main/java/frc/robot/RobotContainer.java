@@ -50,7 +50,7 @@ public class RobotContainer {
   // Trigger & Button Bindings!
   private void configureBindings() {
 
-    // Intake
+    // Intake - Right Bump
     new JoystickButton(m_driverController.getHID(), DriveConstants.k_intakeButton)
       .whileTrue(
         new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
@@ -58,7 +58,7 @@ public class RobotContainer {
         new InstantCommand(() -> m_intakeSubsystem.stop(), m_intakeSubsystem)
       );
     
-    // Spin Up
+    // Spin Up - Right Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_spinUpTrigger) > 0.05)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubystem.spinUp(), m_shooterSubystem).alongWith(
@@ -68,7 +68,7 @@ public class RobotContainer {
         new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0)))
       );
     
-    // Pew pew!
+    // Pew pew! - Left Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_shootTrigger) > 0.05)
       .whileTrue(
         new InstantCommand(() -> m_shooterSubystem.shoot(), m_shooterSubystem))
