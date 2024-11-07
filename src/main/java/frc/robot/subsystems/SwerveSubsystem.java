@@ -6,18 +6,26 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveConstants;
 
 import java.io.File;
 import java.util.function.DoubleSupplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 // Swerve Subsystem Code yippee
 public class SwerveSubsystem extends SubsystemBase {
@@ -30,8 +38,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem() {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    // TURN OFF DURING COMPETITION BECAUSE IT * WILL *  SLOW YOUR ROBOT
-    // (It's for displaying info in Shuffleboard)
+    // TURN OFF DURING COMPETITION BECAUSE IT * WILL *  SLOW YOUR ROBOT (It's for displaying info in Shuffleboard)
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     
     // Initializes robot using the JSON Files with all the constants so you don't have to. Hooray!
@@ -42,8 +49,39 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(e);
     }
     
-    // Cosine Compensator makes your robot slower on some wheels. Set it to false if it drives funky
-    swerveDrive.setCosineCompensator(false);
+    // Cosine Compensator makes your robot slower on some wheels. Set it to opposite bool if it drives funky
+    swerveDrive.setCosineCompensator(true);
+
+    // Keeps robot locked in position when moving, keep false
+    swerveDrive.setHeadingCorrection(false);
+
+    // Configure the PathPlanner Stuff
+    AutoBuilder.configureHolonomic( 
+        this::getPose, // Robot pose supplier
+        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        this::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+            AutoConstants.k_translationPID,
+            // Translation PID constants
+            AutoConstants.k_anglePID,
+            // Rotation PID constants
+            4.5,
+            // Max module speed, in m/s
+            swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
+            // Drive base radius in meters. Distance from robot center to furthest module.
+            new ReplanningConfig()
+            // Default path replanning config. See the API for the options here
+        ),
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          var alliance = DriverStation.getAlliance();
+          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+        },
+        this // Reference to this subsystem to set requirements
+    );
   }
 
   // Command to drive the robot using translative values and heading as angular velocity.
@@ -52,8 +90,7 @@ public class SwerveSubsystem extends SubsystemBase {
   // angularRotationX - Angular velocity of the robot to set. Cubed for smoother controls.
   // Returns Drive command.
 
-  public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX)
-  {
+  public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     return run(() -> {
       // Make the robot move
       swerveDrive.drive(SwerveMath.scaleTranslation(new Translation2d(
@@ -63,5 +100,32 @@ public class SwerveSubsystem extends SubsystemBase {
         true,
         false);
     });
+  }
+
+  // Gets the current pose (position and rotation) of the robot, as reported by odometry.
+  public Pose2d getPose() {
+    return swerveDrive.getPose();
+  }
+
+  // Resets odometry to the given pose. Gyro angle and module positions do not need to be reset when calling this
+  // method.  However, if either gyro angle or module position is reset, this must be called in order for odometry to
+  // keep working.
+  public void resetOdometry(Pose2d initialHolonomicPose) {
+    swerveDrive.resetOdometry(initialHolonomicPose);
+  }
+
+  // Gets the current velocity (x, y and omega) of the robot
+  public ChassisSpeeds getRobotVelocity() {
+    return swerveDrive.getRobotVelocity();
+  }
+
+  // Set chassis speeds with closed-loop velocity control.
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    swerveDrive.setChassisSpeeds(chassisSpeeds);
+  }
+
+  // Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
+  public void zeroGyro() {
+    swerveDrive.zeroGyro();
   }
 }

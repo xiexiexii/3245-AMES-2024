@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.MotorConstants;
 import frc.robot.Constants.MotorIDConstants;
-import frc.robot.Constants.PIDConstants;
+import frc.robot.Constants.MotorPIDConstants;
 
 // Intake Subsystem Code yippee
 public class IntakeSubsystem extends SubsystemBase {
@@ -34,9 +34,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     // PID Stuff
     slot0Configs = new Slot0Configs();
-    slot0Configs.kP = PIDConstants.k_intakekP;
-    slot0Configs.kI = PIDConstants.k_intakekI;
-    slot0Configs.kD = PIDConstants.k_intakekD;
+    slot0Configs.kP = MotorPIDConstants.k_intakekP;
+    slot0Configs.kI = MotorPIDConstants.k_intakekI;
+    slot0Configs.kD = MotorPIDConstants.k_intakekD;
 
     // Kraken Configs
     krakenConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = MotorConstants.k_rampRate;

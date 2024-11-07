@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -74,9 +76,15 @@ public final class Constants {
   }
 
   // Constants for PID
-  public static final class PIDConstants {
+  public static final class MotorPIDConstants {
     public static final double k_intakekP = 0.0;
     public static final double k_intakekI = 0.0;
     public static final double k_intakekD = 0.0;
+  }
+
+  // Constants for Autonomous
+  public static final class AutoConstants {
+    public static final PIDConstants k_translationPID = new PIDConstants(0.7, 0, 0);
+    public static final PIDConstants k_anglePID = new PIDConstants(0.4, 0, 0.01);
   }
 }

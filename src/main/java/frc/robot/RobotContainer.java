@@ -13,6 +13,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,11 +28,11 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
-  private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
+  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  // private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
+  // private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
 
-  // New Choosing Option in SmartDashboard for Autos
+  // Create New Choosing Option in SmartDashboard for Autos
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -45,11 +46,15 @@ public class RobotContainer {
 
     // Makes the drive command the default command (good!)
     m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
+
+    // Puts a chooser on the SmartDashboard!
+    SmartDashboard.putData("AutoMode", m_chooser);
   }
 
   // Trigger & Button Bindings!
   private void configureBindings() {
 
+    /* 
     // Intake - Right Bump
     new JoystickButton(m_driverController.getHID(), DriveConstants.k_intakeButton)
       .whileTrue(
@@ -75,6 +80,7 @@ public class RobotContainer {
       .whileFalse(
         new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem)
       );
+    */
   }
   
   // Command that takes Xbox Controller Inputs and allows robot to drive

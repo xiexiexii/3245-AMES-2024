@@ -7,12 +7,12 @@
   "drive": {
     "type": "talonfx",
     "id": 1,
-    "canbus": null
+    "canbus": "Drivebase"
   },
   "angle": {
     "type": "talonfx",
     "id": 2,
-    "canbus": null
+    "canbus": "Drivebase"
   },
   "encoder": {
     "type": "thrifty",
