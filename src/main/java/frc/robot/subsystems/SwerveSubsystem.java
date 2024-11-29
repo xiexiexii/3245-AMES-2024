@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
@@ -127,5 +128,11 @@ public class SwerveSubsystem extends SubsystemBase {
   // Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
   public void zeroGyro() {
     swerveDrive.zeroGyro();
+  }
+
+  // Get Auto Command
+  public Command getAutonomousCommand(String pathName) {
+    // Create a path following command using AutoBuilder. This will also trigger event markers.
+    return new PathPlannerAuto(pathName);
   }
 }

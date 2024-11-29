@@ -30,7 +30,7 @@ public class RobotContainer {
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   // private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
-  // private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
+  private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
 
   // Create New Choosing Option in SmartDashboard for Autos
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -49,6 +49,9 @@ public class RobotContainer {
 
     // Puts a chooser on the SmartDashboard!
     SmartDashboard.putData("AutoMode", m_chooser);
+
+    // Autos
+    m_chooser.addOption("Drive Forward", m_swerveSubsystem.getAutonomousCommand("Drive Forward"));
   }
 
   // Trigger & Button Bindings!
@@ -62,7 +65,8 @@ public class RobotContainer {
       .whileFalse(
         new InstantCommand(() -> m_intakeSubsystem.stop(), m_intakeSubsystem)
       );
-    
+    */
+
     // Spin Up - Right Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_spinUpTrigger) > 0.05)
       .whileTrue(
@@ -78,9 +82,14 @@ public class RobotContainer {
       .whileTrue(
         new InstantCommand(() -> m_shooterSubystem.shoot(), m_shooterSubystem))
       .whileFalse(
-        new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem)
+        new InstantCommand(() -> m_shooterSubystem.stopShoot(), m_shooterSubystem)
       );
-    */
+
+    // Zero Gyro - Start Button
+    new JoystickButton(m_driverController.getHID(), DriveConstants.k_zeroGyroButton)
+      .whileTrue(
+        new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
+      );
   }
   
   // Command that takes Xbox Controller Inputs and allows robot to drive

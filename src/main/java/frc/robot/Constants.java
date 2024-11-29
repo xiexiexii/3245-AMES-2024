@@ -19,14 +19,14 @@ public final class Constants {
 
   // Constants for Kraken Drivetrain!
   public static final class SwerveConstants {
-    public static final double k_maxSpeed = Units.feetToMeters(18.9);
+    public static final double k_maxSpeed = Units.feetToMeters(5); // 18.9 is max
   }
 
   // Constants for controller input!
   public static final class DriveConstants {
 
     // YAGSL Swerve Stuff (Don't touch)
-    public static final double k_driveDeadBand = 0.05;
+    public static final double k_driveDeadBand = 0.1;
     public static final double k_driveSpeed = -1;
     public static final double k_turnRate = -1;
 
@@ -34,6 +34,7 @@ public final class Constants {
     public final static int k_intakeButton = Button.kRightBumper.value; // Right Bump
     public final static int k_spinUpTrigger = Axis.kRightTrigger.value; // Right Trig
     public final static int k_shootTrigger = Axis.kLeftTrigger.value; // Left Trig
+    public final static int k_zeroGyroButton = Button.kStart.value; // Start Button
   }
 
   // Constants for Motor IDs
@@ -64,14 +65,14 @@ public final class Constants {
 
   // Constants for Shooter
   public static final class ShooterConstants {
-    public static final double k_shooterIndexerKrakenSpeed = 0.6;
-    public static final double k_shooterKrakenSpeed = 0.95;
+    public static final double k_shooterIndexerKrakenSpeed = 0.1;
+    public static final double k_shooterKrakenSpeed = 0.3;
   }
 
   // Constants for Motors
   public static final class MotorConstants {
-    public static final double k_rampRate = 0.40;
-    public static final double k_closedMaxSpeed = 0.95;
+    public static final double k_rampRate = 0.05;
+    public static final double k_closedMaxSpeed = 0.8;
     public static final int k_supplyCurrentLimit = 40;
   }
 
@@ -80,6 +81,8 @@ public final class Constants {
     public static final double k_intakekP = 0.0;
     public static final double k_intakekI = 0.0;
     public static final double k_intakekD = 0.0;
+    public static final double k_intakekS = 0.0;
+    public static final double k_intakekV = 0.0;
   }
 
   // Constants for Autonomous

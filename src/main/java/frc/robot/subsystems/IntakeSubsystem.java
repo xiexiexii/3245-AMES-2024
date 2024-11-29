@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -23,7 +22,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private TalonFX m_intakeBottomMotor;
   private TalonFX m_intakeTopMotor;
   private TalonFXConfiguration krakenConfig;
-  private Slot0Configs slot0Configs;
 
   // Other setup items
   public IntakeSubsystem() {
@@ -33,10 +31,11 @@ public class IntakeSubsystem extends SubsystemBase {
     m_intakeTopMotor = new TalonFX(MotorIDConstants.k_intakeTopMotorID);
 
     // PID Stuff
-    slot0Configs = new Slot0Configs();
-    slot0Configs.kP = MotorPIDConstants.k_intakekP;
-    slot0Configs.kI = MotorPIDConstants.k_intakekI;
-    slot0Configs.kD = MotorPIDConstants.k_intakekD;
+    krakenConfig.Slot0.kP = MotorPIDConstants.k_intakekP;
+    krakenConfig.Slot0.kI = MotorPIDConstants.k_intakekI;
+    krakenConfig.Slot0.kD = MotorPIDConstants.k_intakekD;
+    krakenConfig.Slot0.kS = MotorPIDConstants.k_intakekS;
+    krakenConfig.Slot0.kV = MotorPIDConstants.k_intakekV;
 
     // Kraken Configs
     krakenConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = MotorConstants.k_rampRate;
@@ -46,9 +45,8 @@ public class IntakeSubsystem extends SubsystemBase {
     krakenConfig.CurrentLimits.SupplyCurrentLimit = MotorConstants.k_supplyCurrentLimit;
 
     // Apply Configs, Inversion, Control requests
-    m_intakeBottomMotor.getConfigurator().apply(krakenConfig);
-    m_intakeTopMotor.getConfigurator().apply(krakenConfig);
-    m_intakeBottomMotor.getConfigurator().apply(slot0Configs, 0.05);
+    m_intakeBottomMotor.getConfigurator().apply(krakenConfig, 0.05);
+    m_intakeTopMotor.getConfigurator().apply(krakenConfig, 0.05);
 
     m_intakeBottomMotor.setInverted(false);
     m_intakeTopMotor.setControl(new Follower(m_intakeBottomMotor.getDeviceID(), true));
