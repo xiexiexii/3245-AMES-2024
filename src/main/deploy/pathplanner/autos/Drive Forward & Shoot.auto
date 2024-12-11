@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3,
-      "y": 5.5
+      "x": 2.000000000000018,
+      "y": 2.5
     },
-    "rotation": 0.0
+    "rotation": 1.5045734213005177e-27
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TestPath"
+            "pathName": "DriveForward"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoSpinUpShoot"
           }
         }
       ]

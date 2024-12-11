@@ -7,11 +7,9 @@ package frc.robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,8 +26,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
-  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  // private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
+  private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
   private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
 
   // Create New Choosing Option in SmartDashboard for Autos
@@ -57,32 +54,41 @@ public class RobotContainer {
   // Trigger & Button Bindings!
   private void configureBindings() {
 
-    /* 
-    // Intake - Right Bump
-    new JoystickButton(m_driverController.getHID(), DriveConstants.k_intakeButton)
-      .whileTrue(
-        new InstantCommand(() -> m_intakeSubsystem.intake(), m_intakeSubsystem))
-      .whileFalse(
-        new InstantCommand(() -> m_intakeSubsystem.stop(), m_intakeSubsystem)
-      );
-    */
-
     // Spin Up - Right Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_spinUpTrigger) > 0.05)
+
       .whileTrue(
         new InstantCommand(() -> m_shooterSubystem.spinUp(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1))))
+        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem))
+      )
       .whileFalse(
         new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0)))
+        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem))
       );
+
+      /*
+      .whileTrue(
+        new InstantCommand(() -> m_shooterSubystem.spinUp(), m_shooterSubystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem).alongWith(
+        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1))))
+      )
+      .whileFalse( // Add stop index
+        new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem).alongWith(
+        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1))))
+      );
+      */
     
     // Pew pew! - Left Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_shootTrigger) > 0.05)
       .whileTrue(
-        new InstantCommand(() -> m_shooterSubystem.shoot(), m_shooterSubystem))
+        new InstantCommand(() -> m_shooterSubystem.shoot(), m_shooterSubystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem))
+      )
       .whileFalse(
-        new InstantCommand(() -> m_shooterSubystem.stopShoot(), m_shooterSubystem)
+        new InstantCommand(() -> m_shooterSubystem.stopShoot(), m_shooterSubystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem)
+        )
       );
 
     // Zero Gyro - Start Button

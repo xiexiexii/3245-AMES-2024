@@ -40,33 +40,23 @@ public final class Constants {
   // Constants for Motor IDs
   public static final class MotorIDConstants {
 
-    // Intake
-    public static final int k_intakeBottomMotorID = 11;
-    public static final int k_intakeTopMotorID = 12;
-
     // Indexer
-    public static final int k_indexerBottomMotorID = 21;
-    public static final int k_indexerTopMotorID =  22;
+    public static final int k_indexerNEOID = 21;
 
     // Shooter
     public static final int k_shooterIndexerMotorID = 31;
     public static final int k_shooterMotorID = 32;
   }
 
-  // Constants for Intake
-  public static final class IntakeConstants {
-    public static final double k_intakeKrakenSpeed = 0.95;
-  }
-
   // Constants for Indexer
   public static final class IndexerConstants {
-    public static final double k_indexerKrakenSpeed = 0.95;
+    public static final double k_indexerNEOSpeed = 0.65; // TODO: Check value
   }
 
   // Constants for Shooter
   public static final class ShooterConstants {
-    public static final double k_shooterIndexerKrakenSpeed = 0.1;
-    public static final double k_shooterKrakenSpeed = 0.3;
+    public static final double k_shooterIndexerKrakenSpeed = 0.45; // TODO: Check value
+    public static final double k_shooterKrakenSpeed = 0.6; // TODO: Check value
   }
 
   // Constants for Motors
@@ -89,5 +79,8 @@ public final class Constants {
   public static final class AutoConstants {
     public static final PIDConstants k_translationPID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants k_anglePID = new PIDConstants(0.4, 0, 0.01);
+
+    public static final double spinUpAutoTime = 10; // TODO: Tune Value
+    public static final double shootAutoTime = 3; // TODO: Tune Value
   }
 }

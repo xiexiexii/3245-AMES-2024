@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.LimelightHelpers;
 
 import java.io.File;
 import java.util.function.DoubleSupplier;
@@ -24,6 +25,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -40,7 +42,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     // TURN OFF DURING COMPETITION BECAUSE IT * WILL *  SLOW YOUR ROBOT (It's for displaying info in Shuffleboard)
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; // TODO: CHECK MODULE ALIGNMENT
     
     // Initializes robot using the JSON Files with all the constants so you don't have to. Hooray!
     try {
@@ -85,6 +87,14 @@ public class SwerveSubsystem extends SubsystemBase {
     );
   }
 
+  // This method will be called once per scheduler run
+  // Periodically update the odometry
+  public void periodic() {
+
+    // Updates Odometry with Vision if Applicable
+    // updateVisionOdometry(); TODO: COMMENT ME IN FOR LIMELIGHT!
+  }
+
   // Command to drive the robot using translative values and heading as angular velocity.
   // translationX - Translation in the X direction. Cubed for smoother controls.
   // translationY - Translation in the Y direction. Cubed for smoother controls.
@@ -113,6 +123,32 @@ public class SwerveSubsystem extends SubsystemBase {
   // keep working.
   public void resetOdometry(Pose2d initialHolonomicPose) {
     swerveDrive.resetOdometry(initialHolonomicPose);
+  }
+
+  // Updates Odometry with the Limelight Readings using MT2
+  public void updateVisionOdometry() {
+
+    // Used to stop updating upon condiditions
+    boolean doRejectUpdate = false;
+
+    // Gets the robot's yaw for LL, then gets a field pose estimate using MT2
+    LimelightHelpers.SetRobotOrientation("", swerveDrive.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.PoseEstimate mt2Estimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("");
+    
+    // If angular velocity is greater than 720 deg/s, ignore vision updates
+    if(Math.abs(swerveDrive.getGyro().getRate()) > 720) {
+      doRejectUpdate = true;
+    }
+
+    // If there are no tags in sight, ignore vision updates
+    if(mt2Estimate.tagCount == 0) {
+      doRejectUpdate = true;
+    }
+
+    // If all conditions are met, update vision
+    if(!doRejectUpdate && mt2Estimate != null) {
+      swerveDrive.addVisionMeasurement(mt2Estimate.pose, mt2Estimate.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+    }
   }
 
   // Gets the current velocity (x, y and omega) of the robot

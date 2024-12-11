@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 import frc.robot.Constants.MotorIDConstants;
@@ -13,30 +15,26 @@ import frc.robot.Constants.MotorIDConstants;
 public class IndexerSubsystem extends SubsystemBase {
 
   // Init Stuff
-  private TalonFX m_indexerBottomMotor;
-  private TalonFX m_indexerTopMotor;
+  private CANSparkMax m_indexerNEO;
 
   // Other setup items
   public IndexerSubsystem() {
     
-    // KRAKENS
-    m_indexerBottomMotor = new TalonFX(MotorIDConstants.k_indexerBottomMotorID);
-    m_indexerTopMotor = new TalonFX(MotorIDConstants.k_indexerTopMotorID);
-
+    // Set up NEO 550 Stuff
+    m_indexerNEO = new CANSparkMax(MotorIDConstants.k_indexerNEOID, MotorType.kBrushless);
+    m_indexerNEO.setOpenLoopRampRate(0.25);
   }
 
   // Runs once per scheduler run
   public void periodic() {}
   
   // Indexes yippeee
-  public void index() {
-    m_indexerBottomMotor.set(IndexerConstants.k_indexerKrakenSpeed);
-    m_indexerTopMotor.set(-IndexerConstants.k_indexerKrakenSpeed);
+  public void run() {
+    m_indexerNEO.set(IndexerConstants.k_indexerNEOSpeed);
   }
 
   // Stops motors
   public void stop() {
-    m_indexerBottomMotor.set(0);
-    m_indexerTopMotor.set(0);
+    m_indexerNEO.set(0);
   }
 }

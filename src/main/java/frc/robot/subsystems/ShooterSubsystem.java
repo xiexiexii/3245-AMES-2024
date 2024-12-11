@@ -62,10 +62,14 @@ public class ShooterSubsystem extends SubsystemBase {
     m_shooterMotor.set(ShooterConstants.k_shooterKrakenSpeed);
   }
 
+  // Spin up command
+  public void indexUp() {
+    m_shooterMotor.set(ShooterConstants.k_shooterIndexerKrakenSpeed);
+  }
+
   // Shoots yippeee
   public void shoot() {
     m_shooterIndexerMotor.set(ShooterConstants.k_shooterIndexerKrakenSpeed);
-    m_shooterMotor.set(ShooterConstants.k_shooterKrakenSpeed);
   }
 
   // Stops motors
