@@ -21,8 +21,8 @@ public class AutoSpinUpShoot extends Command {
         
     // Definitions and setting parameters are equal to members!
     m_ShooterSubsystem = shooterSubsystem;
-    m_IndexerSubsystem = indexerSubsystem;
     addRequirements(shooterSubsystem);
+    m_IndexerSubsystem = indexerSubsystem;
     addRequirements(indexerSubsystem);
   }
 
@@ -35,12 +35,15 @@ public class AutoSpinUpShoot extends Command {
   // Actual command
   public void execute() {
     if(timer.get() < AutoConstants.spinUpAutoTime){
-      m_ShooterSubsystem.spinUp();
+      m_ShooterSubsystem.shoot();
+      m_IndexerSubsystem.run();
     }
+    /*
     if(timer.get() > AutoConstants.shootAutoTime && timer.get() < AutoConstants.spinUpAutoTime){
       m_ShooterSubsystem.shoot();
       m_IndexerSubsystem.run();
     }
+    */
     if (timer.get() > AutoConstants.spinUpAutoTime){
       m_ShooterSubsystem.stop();
       m_IndexerSubsystem.stop();

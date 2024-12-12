@@ -35,6 +35,7 @@ public final class Constants {
     public final static int k_spinUpTrigger = Axis.kRightTrigger.value; // Right Trig
     public final static int k_shootTrigger = Axis.kLeftTrigger.value; // Left Trig
     public final static int k_zeroGyroButton = Button.kStart.value; // Start Button
+    public final static int k_testButton = Button.kA.value; // A
   }
 
   // Constants for Motor IDs
@@ -56,7 +57,7 @@ public final class Constants {
   // Constants for Shooter
   public static final class ShooterConstants {
     public static final double k_shooterIndexerKrakenSpeed = 0.45; // TODO: Check value
-    public static final double k_shooterKrakenSpeed = 0.6; // TODO: Check value
+    public static final double k_shooterKrakenSpeed = 0.45; // TODO: Check value
   }
 
   // Constants for Motors

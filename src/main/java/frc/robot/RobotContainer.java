@@ -6,9 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutoSpinUpShoot;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,8 +51,11 @@ public class RobotContainer {
     // Puts a chooser on the SmartDashboard!
     SmartDashboard.putData("AutoMode", m_chooser);
 
+    // Named Command Configuration
+    NamedCommands.registerCommand("Auto Spin Up Shoot", new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem));
+
     // Autos
-    m_chooser.addOption("Drive Forward", m_swerveSubsystem.getAutonomousCommand("Drive Forward"));
+    m_chooser.addOption("Drive Forward & Shoot", m_swerveSubsystem.getAutonomousCommand("Drive Forward & Shoot"));
   }
 
   // Trigger & Button Bindings!
@@ -95,6 +102,11 @@ public class RobotContainer {
     new JoystickButton(m_driverController.getHID(), DriveConstants.k_zeroGyroButton)
       .whileTrue(
         new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
+      );
+
+    new JoystickButton(m_driverController.getHID(), DriveConstants.k_testButton)
+      .whileTrue(
+        new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem)
       );
   }
   
