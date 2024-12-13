@@ -57,7 +57,7 @@ public final class Constants {
   // Constants for Shooter
   public static final class ShooterConstants {
     public static final double k_shooterIndexerKrakenSpeed = 0.45; // TODO: Check value
-    public static final double k_shooterKrakenSpeed = 0.45; // TODO: Check value
+    public static final double k_shooterKrakenSpeed = 0.5; // TODO: Check value
   }
 
   // Constants for Motors
@@ -81,7 +81,7 @@ public final class Constants {
     public static final PIDConstants k_translationPID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants k_anglePID = new PIDConstants(0.4, 0, 0.01);
 
-    public static final double spinUpAutoTime = 10; // TODO: Tune Value
+    public static final double spinUpAutoTime = 8; // TODO: Tune Value
     public static final double shootAutoTime = 3; // TODO: Tune Value
   }
 }

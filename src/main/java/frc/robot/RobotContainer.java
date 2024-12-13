@@ -48,14 +48,19 @@ public class RobotContainer {
     // Makes the drive command the default command (good!)
     m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
-    // Puts a chooser on the SmartDashboard!
-    SmartDashboard.putData("AutoMode", m_chooser);
-
-    // Named Command Configuration
-    NamedCommands.registerCommand("Auto Spin Up Shoot", new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem));
+    // Named Command Configuration TODO: FIND OUT IF THIS NEEDS TO BE BEFORE CHOOSER!
+    NamedCommands.registerCommand("Rev Up Shoot", new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem));
 
     // Autos
+    m_chooser.addOption("Reverse", m_swerveSubsystem.getAutonomousCommand("Reverse"));
+    m_chooser.addOption("Shoot Only", m_swerveSubsystem.getAutonomousCommand("Shoot"));
+    m_chooser.addOption("Drive Across Line", m_swerveSubsystem.getAutonomousCommand("Drive Across Line"));
     m_chooser.addOption("Drive Forward & Shoot", m_swerveSubsystem.getAutonomousCommand("Drive Forward & Shoot"));
+    m_chooser.addOption("Drive Forward, Shoot, Drive Back", m_swerveSubsystem.getAutonomousCommand("Drive Forward, Shoot, Drive Back"));
+    m_chooser.addOption("Drive Forward, Shoot, Move Back", m_swerveSubsystem.getAutonomousCommand("Drive Forward, Shoot, Move Back"));
+
+    // Puts a chooser on the SmartDashboard!
+    SmartDashboard.putData("AutoMode", m_chooser);
   }
 
   // Trigger & Button Bindings!
@@ -72,19 +77,6 @@ public class RobotContainer {
         new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem).alongWith(
         new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem))
       );
-
-      /*
-      .whileTrue(
-        new InstantCommand(() -> m_shooterSubystem.spinUp(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem).alongWith(
-        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1))))
-      )
-      .whileFalse( // Add stop index
-        new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem).alongWith(
-        new InstantCommand(() -> m_driverController.getHID().setRumble(RumbleType.kBothRumble, 1))))
-      );
-      */
     
     // Pew pew! - Left Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_shootTrigger) > 0.05)
@@ -104,10 +96,11 @@ public class RobotContainer {
         new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
       );
 
-    new JoystickButton(m_driverController.getHID(), DriveConstants.k_testButton)
-      .whileTrue(
-        new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem)
-      );
+    // Test Auto Shoot Stuff
+    // new JoystickButton(m_driverController.getHID(), DriveConstants.k_testButton)
+    //   .whileTrue(
+    //     new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem)
+    //   );
   }
   
   // Command that takes Xbox Controller Inputs and allows robot to drive

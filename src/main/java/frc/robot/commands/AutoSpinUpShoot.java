@@ -34,27 +34,30 @@ public class AutoSpinUpShoot extends Command {
   
   // Actual command
   public void execute() {
+
+    // Spin up and run indexer for the first spinUpAutoTime seconds
     if(timer.get() < AutoConstants.spinUpAutoTime){
-      m_ShooterSubsystem.shoot();
+      m_ShooterSubsystem.spinUp();
       m_IndexerSubsystem.run();
     }
-    /*
+
+    // Shoot and run indexer from the shootAutoTime to the spinUpAutoTime
     if(timer.get() > AutoConstants.shootAutoTime && timer.get() < AutoConstants.spinUpAutoTime){
       m_ShooterSubsystem.shoot();
       m_IndexerSubsystem.run();
     }
-    */
-    if (timer.get() > AutoConstants.spinUpAutoTime){
-      m_ShooterSubsystem.stop();
-      m_IndexerSubsystem.stop();
-    }
   }
 
-  // Unused
-  public void end(boolean interrupted) {}
+  // Stuff that happens when command is over
+  public void end(boolean interrupted) {
+    m_ShooterSubsystem.stop();
+    m_IndexerSubsystem.stop();
+  }
 
   // Checks if the command is done
   public boolean isFinished() {
+
+    // Am I done?  Am I done? Am I finally done?
     return timer.get() > AutoConstants.spinUpAutoTime;
   }
 }

@@ -20,7 +20,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoSpinUpShoot"
+            "name": "Rev Up Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Move Back"
           }
         }
       ]

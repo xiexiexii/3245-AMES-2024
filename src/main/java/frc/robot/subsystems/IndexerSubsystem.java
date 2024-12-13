@@ -20,8 +20,10 @@ public class IndexerSubsystem extends SubsystemBase {
   // Other setup items
   public IndexerSubsystem() {
     
-    // Set up NEO 550 Stuff
+    // Set up NEO 550
     m_indexerNEO = new CANSparkMax(MotorIDConstants.k_indexerNEOID, MotorType.kBrushless);
+
+    // RAMP RATE IS SO IMPORTANT, tells motor how fast it can speed up
     m_indexerNEO.setOpenLoopRampRate(0.25);
   }
 

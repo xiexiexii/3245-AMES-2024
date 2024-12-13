@@ -42,7 +42,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     // TURN OFF DURING COMPETITION BECAUSE IT * WILL *  SLOW YOUR ROBOT (It's for displaying info in Shuffleboard)
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH; // TODO: TURN ME OFF FOR COMP
+    // SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     
     // Initializes robot using the JSON Files with all the constants so you don't have to. Hooray!
     try {
