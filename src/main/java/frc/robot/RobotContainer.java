@@ -8,6 +8,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoSpinUpShoot;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.LEDSSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -31,7 +32,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem();
   private final IndexerSubsystem m_indexerSubsystem = new IndexerSubsystem();
-  private final ShooterSubsystem m_shooterSubystem = new ShooterSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  private final LEDSSubsystem m_ledsSubsystem = new LEDSSubsystem();
 
   // Create New Choosing Option in SmartDashboard for Autos
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -48,8 +50,8 @@ public class RobotContainer {
     // Makes the drive command the default command (good!)
     m_swerveSubsystem.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
-    // Named Command Configuration TODO: FIND OUT IF THIS NEEDS TO BE BEFORE CHOOSER!
-    NamedCommands.registerCommand("Rev Up Shoot", new AutoSpinUpShoot(m_shooterSubystem, m_indexerSubsystem));
+    // Named Command Configuration
+    NamedCommands.registerCommand("Rev Up Shoot", new AutoSpinUpShoot(m_shooterSubsystem, m_indexerSubsystem));
 
     // Autos
     m_chooser.addOption("Reverse", m_swerveSubsystem.getAutonomousCommand("Reverse"));
@@ -70,30 +72,32 @@ public class RobotContainer {
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_spinUpTrigger) > 0.05)
 
       .whileTrue(
-        new InstantCommand(() -> m_shooterSubystem.spinUp(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem))
+        new InstantCommand(() -> m_shooterSubsystem.spinUp(), m_shooterSubsystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem)).alongWith(
+        new InstantCommand(() -> m_ledsSubsystem.setViolet(), m_ledsSubsystem))
       )
       .whileFalse(
-        new InstantCommand(() -> m_shooterSubystem.stop(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem))
+        new InstantCommand(() -> m_shooterSubsystem.stop(), m_shooterSubsystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem)).alongWith(
+        new InstantCommand(() -> m_ledsSubsystem.setTeamColor(), m_ledsSubsystem))
       );
     
     // Pew pew! - Left Trig
     new Trigger(() -> m_driverController.getRawAxis(DriveConstants.k_shootTrigger) > 0.05)
       .whileTrue(
-        new InstantCommand(() -> m_shooterSubystem.shoot(), m_shooterSubystem).alongWith(
+        new InstantCommand(() -> m_shooterSubsystem.shoot(), m_shooterSubsystem).alongWith(
         new InstantCommand(() -> m_indexerSubsystem.run(), m_indexerSubsystem))
       )
       .whileFalse(
-        new InstantCommand(() -> m_shooterSubystem.stopShoot(), m_shooterSubystem).alongWith(
-        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem)
-        )
+        new InstantCommand(() -> m_shooterSubsystem.stopShoot(), m_shooterSubsystem).alongWith(
+        new InstantCommand(() -> m_indexerSubsystem.stop(), m_indexerSubsystem))
       );
 
     // Zero Gyro - Start Button
     new JoystickButton(m_driverController.getHID(), DriveConstants.k_zeroGyroButton)
       .whileTrue(
-        new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem)
+        new InstantCommand(() -> m_swerveSubsystem.zeroGyro(), m_swerveSubsystem).alongWith(
+        new InstantCommand(() -> m_ledsSubsystem.setHotPink()))
       );
 
     // Test Auto Shoot Stuff

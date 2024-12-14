@@ -41,6 +41,9 @@ public final class Constants {
   // Constants for Motor IDs
   public static final class MotorIDConstants {
 
+    // LEDS
+    public static final int blinkinPort = 0;
+
     // Indexer
     public static final int k_indexerNEOID = 21;
 
@@ -51,13 +54,13 @@ public final class Constants {
 
   // Constants for Indexer
   public static final class IndexerConstants {
-    public static final double k_indexerNEOSpeed = 0.65; // TODO: Check value
+    public static final double k_indexerNEOSpeed = 0.65; 
   }
 
   // Constants for Shooter
   public static final class ShooterConstants {
     public static final double k_shooterIndexerKrakenSpeed = 0.45; // TODO: Check value
-    public static final double k_shooterKrakenSpeed = 0.5; // TODO: Check value
+    public static final double k_shooterKrakenSpeed = 0.47; // TODO: Check value
   }
 
   // Constants for Motors

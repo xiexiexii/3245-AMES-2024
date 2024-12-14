@@ -166,6 +166,10 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.zeroGyro();
   }
 
+  public void setx() {
+    swerveDrive.lockPose();
+  }
+
   // Get Auto Command
   public Command getAutonomousCommand(String pathName) {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
