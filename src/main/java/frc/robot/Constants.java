@@ -59,8 +59,13 @@ public final class Constants {
 
   // Constants for Shooter
   public static final class ShooterConstants {
-    public static final double k_shooterIndexerKrakenSpeed = 0.45; // TODO: Check value
-    public static final double k_shooterKrakenSpeed = 0.47; // TODO: Check value
+    public static final double k_shooterIndexerKrakenSpeed = 0.45; 
+    public static final double k_shooterKrakenSpeed = 0.47;
+
+    // State Space Control Stuff
+    public static final double kFlywheelMOI = 0.00032; // TODO: Check me!!
+    public static final double kFlywheelGearing = 1.0; // TODO: Check me!!
+    public static final double kSpinupRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(500.0); // TODO: Check me!!
   }
 
   // Constants for Motors
@@ -84,7 +89,17 @@ public final class Constants {
     public static final PIDConstants k_translationPID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants k_anglePID = new PIDConstants(0.4, 0, 0.01);
 
-    public static final double spinUpAutoTime = 8; // TODO: Tune Value
-    public static final double shootAutoTime = 3; // TODO: Tune Value
+    public static final double spinUpAutoTime = 8; 
+    public static final double shootAutoTime = 3; 
+  }
+
+  // Limelight stuff yay
+  public static final class LimelightConstants {
+
+    // Valid IDS
+    public static final int[] validIDs = {3};
+
+    // Tags
+    public static final int k_redNestID = 3;
   }
 }
