@@ -63,9 +63,9 @@ public final class Constants {
     public static final double k_shooterKrakenSpeed = 0.47;
 
     // State Space Control Stuff
-    public static final double kFlywheelMOI = 0.00032; // TODO: Check me!!
-    public static final double kFlywheelGearing = 1.0; // TODO: Check me!!
-    public static final double kSpinupRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(500.0); // TODO: Check me!!
+    public static final double kFlywheelMOI = 0.00032; // TODO: Check me!! (SSC)
+    public static final double kFlywheelGearing = 1.0; // TODO: Check me!! (SSC)
+    public static final double kSpinupRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(500.0); // TODO: Check me!! (SSC)
   }
 
   // Constants for Motors
@@ -96,10 +96,10 @@ public final class Constants {
   // Limelight stuff yay
   public static final class LimelightConstants {
 
-    // Valid IDS
-    public static final int[] validIDs = {3};
+    // Tag Reject Distance
+    public static final int rejectionDistance = 3;
 
-    // Tags
-    public static final int k_redNestID = 3;
+    // Tag Reject Rotation Rate
+    public static final int rejectionRotationRate = 720;
   }
 }
